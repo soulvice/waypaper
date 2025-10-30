@@ -31,6 +31,7 @@ class Config:
         self.swww_transition_angle = 0
         self.swww_transition_duration = 2
         self.swww_transition_fps = 60
+        self.swww_namespace = ""
         self.mpvpaper_sound = False
         self.mpvpaper_options = ""
         self.lang = "en"
@@ -95,6 +96,7 @@ class Config:
         self.swww_transition_angle = config.get("Settings", "swww_transition_angle", fallback=self.swww_transition_angle)
         self.swww_transition_duration = config.get("Settings", "swww_transition_duration", fallback=self.swww_transition_duration)
         self.swww_transition_fps = config.get("Settings", "swww_transition_fps", fallback=self.swww_transition_fps)
+        self.swww_namespace = config.get("Settings", "swww_namespace", fallback=self.swww_namespace)
         self.mpvpaper_sound = config.getboolean("Settings", "mpvpaper_sound", fallback=self.mpvpaper_sound)
         self.mpvpaper_options = config.get("Settings", "mpvpaper_options", fallback=self.mpvpaper_options)
         self.number_of_columns = int(config.get("Settings", "number_of_columns", fallback=self.number_of_columns))
@@ -247,6 +249,7 @@ class Config:
         config.set("Settings", "swww_transition_angle", str(self.swww_transition_angle))
         config.set("Settings", "swww_transition_duration", str(self.swww_transition_duration))
         config.set("Settings", "swww_transition_fps", str(self.swww_transition_fps))
+        config.set("Settings", "swww_namespace", str(self.swww_namespace))
         config.set("Settings", "mpvpaper_sound", str(self.mpvpaper_sound))
         config.set("Settings", "mpvpaper_options", str(self.mpvpaper_options))
         config.set("Settings", "use_xdg_state", str(self.use_xdg_state))
