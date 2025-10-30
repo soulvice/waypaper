@@ -188,8 +188,11 @@ def change_with_swww(image_path: Path, cf: Config, monitor: str):
     try:
         subprocess.check_output(["pgrep", "swww-daemon"], encoding='utf-8')
     except subprocess.CalledProcessError:
-        subprocess.Popen(["swww-daemon"])
-        print("Launched swww-daemon")
+        if (cf.start_if_stopped): 
+            subprocess.Popen(["swww-daemon"])
+            print("Launched swww-daemon")
+        else:
+            print("swww-daemon not running")
 
     # Get rid of this in future when swww updates everywhere:
     version_p = subprocess.run(["swww", "-V"], capture_output=True, text=True)
@@ -208,8 +211,8 @@ def change_with_swww(image_path: Path, cf: Config, monitor: str):
     command.extend(["--transition-fps", str(cf.swww_transition_fps)])
     if monitor != "All":
         command.extend(["--outputs", monitor])
-    if cf.swww_namespace != "":
-        command.extend(["--namespace", str(cf.swww_namespace)])
+    # Use namespace for swww-deamon
+    command.extend(["--namespace", str(cf.swww_namespace)])
     subprocess.Popen(command)
 
 
