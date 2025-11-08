@@ -12,7 +12,7 @@ from pathlib import Path
 from waypaper.changer import change_wallpaper
 from waypaper.config import Config
 from waypaper.common import get_image_paths, get_image_name, get_random_file, cache_image, get_cached_image_path
-from waypaper.options import FILL_OPTIONS, SORT_OPTIONS, SORT_DISPLAYS, VIDEO_EXTENSIONS , SWWW_TRANSITION_TYPES, get_monitor_options
+from waypaper.options import FILL_OPTIONS, SORT_OPTIONS, SORT_DISPLAYS, VIDEO_EXTENSIONS , awww_TRANSITION_TYPES, get_monitor_options
 from waypaper.translations import Chinese, English, French, German, Polish, Russian, Belarusian, Spanish
 from waypaper.keybindings import Keys
 
@@ -229,43 +229,43 @@ class App(Gtk.Window):
         self.options_box.pack_start(self.backend_option_combo, False, False, 0)
         self.button_row_alignment.add(self.options_box)
 
-        # Create a transition type dropdown menu for swww
-        self.swww_transitions_options = Gtk.ComboBoxText()
+        # Create a transition type dropdown menu for awww
+        self.awww_transitions_options = Gtk.ComboBoxText()
 
         #  Get angle for animation
-        self.swww_angle_entry = Gtk.Entry()
-        self.swww_angle_entry.set_width_chars(5)
-        self.swww_angle_entry.set_placeholder_text("angle")
-        self.swww_angle_entry.connect("focus-in-event", self.on_focus_in)
-        self.swww_angle_entry.connect("focus-out-event", self.on_focus_out)
+        self.awww_angle_entry = Gtk.Entry()
+        self.awww_angle_entry.set_width_chars(5)
+        self.awww_angle_entry.set_placeholder_text("angle")
+        self.awww_angle_entry.connect("focus-in-event", self.on_focus_in)
+        self.awww_angle_entry.connect("focus-out-event", self.on_focus_out)
 
         #  Get steps for animation
-        self.swww_steps_entry = Gtk.Entry()
-        self.swww_steps_entry.set_width_chars(5)
-        self.swww_steps_entry.set_placeholder_text("steps")
-        self.swww_steps_entry.connect("focus-in-event", self.on_focus_in)
-        self.swww_steps_entry.connect("focus-out-event", self.on_focus_out)
+        self.awww_steps_entry = Gtk.Entry()
+        self.awww_steps_entry.set_width_chars(5)
+        self.awww_steps_entry.set_placeholder_text("steps")
+        self.awww_steps_entry.connect("focus-in-event", self.on_focus_in)
+        self.awww_steps_entry.connect("focus-out-event", self.on_focus_out)
 
         #  Get duration for animation
-        self.swww_duration_entry = Gtk.Entry()
-        self.swww_duration_entry.set_width_chars(7)
-        self.swww_duration_entry.set_placeholder_text("duration")
-        self.swww_duration_entry.connect("focus-in-event", self.on_focus_in)
-        self.swww_duration_entry.connect("focus-out-event", self.on_focus_out)
+        self.awww_duration_entry = Gtk.Entry()
+        self.awww_duration_entry.set_width_chars(7)
+        self.awww_duration_entry.set_placeholder_text("duration")
+        self.awww_duration_entry.connect("focus-in-event", self.on_focus_in)
+        self.awww_duration_entry.connect("focus-out-event", self.on_focus_out)
 
         #  Get fps for animation
-        self.swww_fps_entry = Gtk.Entry()
-        self.swww_fps_entry.set_width_chars(5)
-        self.swww_fps_entry.set_placeholder_text("fps")
-        self.swww_fps_entry.connect("focus-in-event", self.on_focus_in)
-        self.swww_fps_entry.connect("focus-out-event", self.on_focus_out)
+        self.awww_fps_entry = Gtk.Entry()
+        self.awww_fps_entry.set_width_chars(5)
+        self.awww_fps_entry.set_placeholder_text("fps")
+        self.awww_fps_entry.connect("focus-in-event", self.on_focus_in)
+        self.awww_fps_entry.connect("focus-out-event", self.on_focus_out)
 
         # Add different buttons depending on backend:
         self.monitor_option_display()
         self.mpv_options_display()
         self.fill_option_display()
         self.color_picker_display()
-        self.swww_options_display()
+        self.awww_options_display()
 
         # Connect the key press events to various actions:
         self.connect("key-press-event", self.on_key_pressed)
@@ -351,49 +351,49 @@ class App(Gtk.Window):
         # Add it to the row of buttons:
         self.options_box.pack_start(self.monitor_option_combo, False, False, 0)
 
-    def swww_options_display(self) -> None:
-        """Show swww transition options if backend is swww"""
-        self.options_box.remove(self.swww_transitions_options)
-        self.options_box.remove(self.swww_angle_entry)
-        self.options_box.remove(self.swww_steps_entry)
-        self.options_box.remove(self.swww_fps_entry)
-        self.options_box.remove(self.swww_duration_entry)
+    def awww_options_display(self) -> None:
+        """Show awww transition options if backend is awww"""
+        self.options_box.remove(self.awww_transitions_options)
+        self.options_box.remove(self.awww_angle_entry)
+        self.options_box.remove(self.awww_steps_entry)
+        self.options_box.remove(self.awww_fps_entry)
+        self.options_box.remove(self.awww_duration_entry)
 
-        if self.cf.backend != "swww":
+        if self.cf.backend != "awww":
             return
 
-        self.swww_transitions_options = Gtk.ComboBoxText()
-        for transitions in SWWW_TRANSITION_TYPES:
-            self.swww_transitions_options.append_text(transitions)
+        self.awww_transitions_options = Gtk.ComboBoxText()
+        for transitions in awww_TRANSITION_TYPES:
+            self.awww_transitions_options.append_text(transitions)
         active_transition = 0
-        if self.cf.swww_transition_type in SWWW_TRANSITION_TYPES:
-            active_transition = SWWW_TRANSITION_TYPES.index(self.cf.swww_transition_type)
-            self.swww_transitions_options.set_active(active_transition)
-            self.swww_transitions_options.connect("changed", self.on_transition_option_changed)
-            self.swww_transitions_options.set_tooltip_text(self.txt.tip_transition)
+        if self.cf.awww_transition_type in awww_TRANSITION_TYPES:
+            active_transition = awww_TRANSITION_TYPES.index(self.cf.awww_transition_type)
+            self.awww_transitions_options.set_active(active_transition)
+            self.awww_transitions_options.connect("changed", self.on_transition_option_changed)
+            self.awww_transitions_options.set_tooltip_text(self.txt.tip_transition)
 
-        self.options_box.pack_end(self.swww_steps_entry, False, False, 0)
-        self.options_box.pack_end(self.swww_fps_entry, False, False, 0)
-        self.options_box.pack_end(self.swww_angle_entry, False, False, 0)
-        self.options_box.pack_end(self.swww_duration_entry, False, False, 0)
-        self.options_box.pack_end(self.swww_transitions_options, False, False, 0)
+        self.options_box.pack_end(self.awww_steps_entry, False, False, 0)
+        self.options_box.pack_end(self.awww_fps_entry, False, False, 0)
+        self.options_box.pack_end(self.awww_angle_entry, False, False, 0)
+        self.options_box.pack_end(self.awww_duration_entry, False, False, 0)
+        self.options_box.pack_end(self.awww_transitions_options, False, False, 0)
 
-    def swww_options_read(self) -> None:
-        """Read swww transition options from the UI if they are valid"""
-        if self.cf.backend != "swww":
+    def awww_options_read(self) -> None:
+        """Read awww transition options from the UI if they are valid"""
+        if self.cf.backend != "awww":
             return
-        angle = self.swww_angle_entry.get_text()
-        steps = self.swww_steps_entry.get_text()
-        fps = self.swww_fps_entry.get_text()
-        duration = self.swww_duration_entry.get_text()
+        angle = self.awww_angle_entry.get_text()
+        steps = self.awww_steps_entry.get_text()
+        fps = self.awww_fps_entry.get_text()
+        duration = self.awww_duration_entry.get_text()
         if angle.isdigit():
-            self.cf.swww_transition_angle = angle
+            self.cf.awww_transition_angle = angle
         if steps.isdigit():
-            self.cf.swww_transition_step = steps
+            self.cf.awww_transition_step = steps
         if fps.isdigit():
-            self.cf.swww_transition_fps = fps
+            self.cf.awww_transition_fps = fps
         if duration.isdigit():
-            self.cf.swww_transition_duration = duration
+            self.cf.awww_transition_duration = duration
 
     def mpv_options_display(self) -> None:
         """Show mpv options if backend is mpvpaper or gslapper, and remove them for other backends"""
@@ -588,7 +588,7 @@ class App(Gtk.Window):
 
     def set_selected_wallpaper(self, path: str) -> None:
         """Set selected image as a wallpaper and save the state"""
-        self.swww_options_read()
+        self.awww_options_read()
         self.cf.select_wallpaper(path)
         if self.cf.selected_wallpaper:
             threading.Thread(target=change_wallpaper, args=(self.cf.selected_wallpaper, self.cf, self.cf.selected_monitor)).start()
@@ -712,15 +712,15 @@ class App(Gtk.Window):
         self.mpv_options_display()
         self.fill_option_display()
         self.color_picker_display()
-        self.swww_options_display()
+        self.awww_options_display()
         self.show_all()
 
 
     def on_transition_option_changed(self, combo) -> None:
         """Update the active transition type based on the selected option"""
         active_index = combo.get_active()
-        self.cf.swww_transition_type = SWWW_TRANSITION_TYPES[active_index]
-        print(f"Transition type changed to: {self.cf.swww_transition_type}")
+        self.cf.awww_transition_type = awww_TRANSITION_TYPES[active_index]
+        print(f"Transition type changed to: {self.cf.awww_transition_type}")
 
 
     def on_color_set(self, color_button):
@@ -886,14 +886,14 @@ class App(Gtk.Window):
         """Reset all input fields and remove focus from them"""
         self.search_entry.set_visible(False)
         self.search_entry.set_visible(True)
-        self.swww_angle_entry.set_visible(False)
-        self.swww_angle_entry.set_visible(True)
-        self.swww_steps_entry.set_visible(False)
-        self.swww_steps_entry.set_visible(True)
-        self.swww_duration_entry.set_visible(False)
-        self.swww_duration_entry.set_visible(True)
-        self.swww_fps_entry.set_visible(False)
-        self.swww_fps_entry.set_visible(True)
+        self.awww_angle_entry.set_visible(False)
+        self.awww_angle_entry.set_visible(True)
+        self.awww_steps_entry.set_visible(False)
+        self.awww_steps_entry.set_visible(True)
+        self.awww_duration_entry.set_visible(False)
+        self.awww_duration_entry.set_visible(True)
+        self.awww_fps_entry.set_visible(False)
+        self.awww_fps_entry.set_visible(True)
         self.main_box.grab_focus()
         self.is_enering_text = False
 

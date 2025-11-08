@@ -5,7 +5,7 @@ import subprocess
 from typing import List, Dict
 
 
-BACKEND_OPTIONS: List[str] = ["none", "swaybg", "swww", "feh", "xwallpaper", "wallutils", "hyprpaper", "mpvpaper", "gslapper", "macos"]
+BACKEND_OPTIONS: List[str] = ["none", "swaybg", "awww", "feh", "xwallpaper", "wallutils", "hyprpaper", "mpvpaper", "gslapper", "macos"]
 FILL_OPTIONS: List[str] = ["fill", "stretch", "fit", "center", "tile"]
 SORT_OPTIONS: List[str] = ["name", "namerev", "date", "daterev", "random"]
 SORT_DISPLAYS: Dict[str, str] = {"name": "Name ↓", "namerev": "Name ↑", "date": "Date ↓", "daterev": "Date ↑", "random": "Random"}
@@ -28,30 +28,30 @@ IMAGE_EXTENSIONS: Dict[str, List[str]] = {
         BACKEND_OPTIONS[9]: ['.gif', '.jpg', '.jpeg', '.png'],
         }
 
-SWWW_TRANSITION_TYPES: List[str] = ["any", "none", "simple", "fade", "wipe",  "left", "right", "top",
+awww_TRANSITION_TYPES: List[str] = ["any", "none", "simple", "fade", "wipe",  "left", "right", "top",
                                 "bottom", "wave", "grow", "center", "outer", "random"]
 
 TIMERS: Dict[str, int] = {"30 sec": 30, "1 min": 60, "2 min": 120, "5 min": 300, "10 min": 600, "30 min": 1800, "1 hour": 3600,
           "2 hours": 7200, "6 hours": 21600, "12 hours": 43200, "1 day": 86400, "1 week": 604800}
 
 
-def get_monitor_names_with_swww() -> List[str]:
-    """Obtain the list of plugged monitors using swww daemon"""
+def get_monitor_names_with_awww() -> List[str]:
+    """Obtain the list of plugged monitors using awww daemon"""
     connected_monitors: List[str] = []
     try:
-        # Check if swww-deamon is already running. If not, launch it:
+        # Check if awww-deamon is already running. If not, launch it:
         try:
-            subprocess.check_output(["pgrep", "swww-daemon"], encoding='utf-8')
+            subprocess.check_output(["pgrep", "awww-daemon"], encoding='utf-8')
         except subprocess.CalledProcessError:
-            subprocess.Popen(["swww-daemon"])
-            print("The swww-daemon launched.")
+            subprocess.Popen(["awww-daemon"])
+            print("The awww-daemon launched.")
         # Check available monitors:
-        monitors_info = str(subprocess.check_output(["swww", "query"], encoding='utf-8'))
+        monitors_info = str(subprocess.check_output(["awww", "query"], encoding='utf-8'))
         monitors = monitors_info.split("\n")
-        version_p = subprocess.run(["swww", "-V"], capture_output=True, text=True)
-        swww_version = [int(x) for x in version_p.stdout.strip().split("-")[0].split(" ")[1].split(".")]
+        version_p = subprocess.run(["awww", "-V"], capture_output=True, text=True)
+        awww_version = [int(x) for x in version_p.stdout.strip().split("-")[0].split(" ")[1].split(".")]
         for monitor in monitors[:-1]:
-            if swww_version >= [0, 11, 0]:
+            if awww_version >= [0, 11, 0]:
                 connected_monitors.append(monitor.split(':')[1].lstrip())
             else:
                 connected_monitors.append(monitor.split(':')[0])
@@ -73,8 +73,8 @@ def get_monitors(backend) -> List[str]:
     try:
         if backend == "hyprpaper":
             return get_monitor_names_with_hyprctl()
-        elif backend == "swww":
-            return get_monitor_names_with_swww()
+        elif backend == "awww":
+            return get_monitor_names_with_awww()
         else:
             from screeninfo import get_monitors as _get_monitors
             return [m.name for m in _get_monitors()]

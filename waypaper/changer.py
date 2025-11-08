@@ -168,10 +168,10 @@ def change_with_gslapper(image_path: Path, cf: Config, monitor: str):
     subprocess.Popen(command)
 
 
-def change_with_swww(image_path: Path, cf: Config, monitor: str):
-    """Change wallpaper with swww backend"""
+def change_with_awww(image_path: Path, cf: Config, monitor: str):
+    """Change wallpaper with awww backend"""
 
-    # Because swaybg and hyprpaper are known to conflict with swww, kill them:
+    # Because swaybg and hyprpaper are known to conflict with awww, kill them:
     seek_and_destroy("swaybg")
     seek_and_destroy("hyprpaper")
 
@@ -184,35 +184,35 @@ def change_with_swww(image_path: Path, cf: Config, monitor: str):
             }
     fill = fill_types[cf.fill_option.lower()]
 
-    # Check if swww-daemon is already running. If not, launch it:
+    # Check if awww-daemon is already running. If not, launch it:
     try:
-        subprocess.check_output(["pgrep", "swww-daemon"], encoding='utf-8')
+        subprocess.check_output(["pgrep", "awww-daemon"], encoding='utf-8')
     except subprocess.CalledProcessError:
         if (cf.start_if_stopped): 
-            subprocess.Popen(["swww-daemon"])
-            print("Launched swww-daemon")
+            subprocess.Popen(["awww-daemon"])
+            print("Launched awww-daemon")
         else:
-            print("swww-daemon not running")
+            print("awww-daemon not running")
 
-    # Get rid of this in future when swww updates everywhere:
-    version_p = subprocess.run(["swww", "-V"], capture_output=True, text=True)
-    swww_version = [int(x) for x in version_p.stdout.strip().split("-")[0].split(" ")[1].split(".")]
+    # Get rid of this in future when awww updates everywhere:
+    version_p = subprocess.run(["awww", "-V"], capture_output=True, text=True)
+    awww_version = [int(x) for x in version_p.stdout.strip().split("-")[0].split(" ")[1].split(".")]
 
-    command = ["swww", "img", image_path]
+    command = ["awww", "img", image_path]
     command.extend(["--resize", fill])
-    if swww_version >= [0, 11, 0]:
+    if awww_version >= [0, 11, 0]:
         command.extend(["--fill-color", cf.color.lstrip("#")])
     else:
         command.extend(["--fill-color", cf.color])
-    command.extend(["--transition-type", cf.swww_transition_type])
-    command.extend(["--transition-step", str(cf.swww_transition_step)])
-    command.extend(["--transition-angle", str(cf.swww_transition_angle)])
-    command.extend(["--transition-duration", str(cf.swww_transition_duration)])
-    command.extend(["--transition-fps", str(cf.swww_transition_fps)])
+    command.extend(["--transition-type", cf.awww_transition_type])
+    command.extend(["--transition-step", str(cf.awww_transition_step)])
+    command.extend(["--transition-angle", str(cf.awww_transition_angle)])
+    command.extend(["--transition-duration", str(cf.awww_transition_duration)])
+    command.extend(["--transition-fps", str(cf.awww_transition_fps)])
     if monitor != "All":
         command.extend(["--outputs", monitor])
-    # Use namespace for swww-deamon
-    command.extend(["--namespace", str(cf.swww_namespace)])
+    # Use namespace for awww-deamon
+    command.extend(["--namespace", str(cf.awww_namespace)])
     subprocess.Popen(command)
 
 
@@ -316,8 +316,8 @@ def change_wallpaper(image_path: Path, cf: Config, monitor: str):
             change_with_swaybg(image_path, cf, monitor)
         if cf.backend == "mpvpaper":
             change_with_mpvpaper(image_path, cf, monitor)
-        if cf.backend == "swww":
-            change_with_swww(image_path, cf, monitor)
+        if cf.backend == "awww":
+            change_with_awww(image_path, cf, monitor)
         if cf.backend == "feh":
             change_with_feh(image_path, cf, monitor)
         if cf.backend == "xwallpaper":

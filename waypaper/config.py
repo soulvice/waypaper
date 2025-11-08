@@ -6,7 +6,7 @@ from argparse import Namespace
 from typing import List
 from platformdirs import user_config_path, user_pictures_path, user_cache_path, user_state_path
 
-from waypaper.options import FILL_OPTIONS, SORT_OPTIONS, SWWW_TRANSITION_TYPES, BACKEND_OPTIONS
+from waypaper.options import FILL_OPTIONS, SORT_OPTIONS, awww_TRANSITION_TYPES, BACKEND_OPTIONS
 from waypaper.common import check_installed_backends
 
 
@@ -26,12 +26,12 @@ class Config:
         self.backend = self.installed_backends[-1]
         self.color = "#ffffff"
         self.number_of_columns = 3
-        self.swww_transition_type = SWWW_TRANSITION_TYPES[0]
-        self.swww_transition_step = 63
-        self.swww_transition_angle = 0
-        self.swww_transition_duration = 2
-        self.swww_transition_fps = 60
-        self.swww_namespace = ""
+        self.awww_transition_type = awww_TRANSITION_TYPES[0]
+        self.awww_transition_step = 63
+        self.awww_transition_angle = 0
+        self.awww_transition_duration = 2
+        self.awww_transition_fps = 60
+        self.awww_namespace = ""
         self.mpvpaper_sound = False
         self.mpvpaper_options = ""
         self.lang = "en"
@@ -92,12 +92,12 @@ class Config:
         self.backend = config.get("Settings", "backend", fallback=self.backend)
         self.color = config.get("Settings", "color", fallback=self.color)
         self.post_command = config.get("Settings", "post_command", fallback=self.post_command)
-        self.swww_transition_type = config.get("Settings", "swww_transition_type", fallback=self.swww_transition_type)
-        self.swww_transition_step = config.get("Settings", "swww_transition_step", fallback=self.swww_transition_step)
-        self.swww_transition_angle = config.get("Settings", "swww_transition_angle", fallback=self.swww_transition_angle)
-        self.swww_transition_duration = config.get("Settings", "swww_transition_duration", fallback=self.swww_transition_duration)
-        self.swww_transition_fps = config.get("Settings", "swww_transition_fps", fallback=self.swww_transition_fps)
-        self.swww_namespace = config.get("Settings", "swww_namespace", fallback=self.swww_namespace)
+        self.awww_transition_type = config.get("Settings", "awww_transition_type", fallback=self.awww_transition_type)
+        self.awww_transition_step = config.get("Settings", "awww_transition_step", fallback=self.awww_transition_step)
+        self.awww_transition_angle = config.get("Settings", "awww_transition_angle", fallback=self.awww_transition_angle)
+        self.awww_transition_duration = config.get("Settings", "awww_transition_duration", fallback=self.awww_transition_duration)
+        self.awww_transition_fps = config.get("Settings", "awww_transition_fps", fallback=self.awww_transition_fps)
+        self.awww_namespace = config.get("Settings", "awww_namespace", fallback=self.awww_namespace)
         self.mpvpaper_sound = config.getboolean("Settings", "mpvpaper_sound", fallback=self.mpvpaper_sound)
         self.mpvpaper_options = config.get("Settings", "mpvpaper_options", fallback=self.mpvpaper_options)
         self.number_of_columns = int(config.get("Settings", "number_of_columns", fallback=self.number_of_columns))
@@ -155,20 +155,20 @@ class Config:
             self.sort_option = SORT_OPTIONS[0]
         if self.fill_option not in FILL_OPTIONS:
             self.fill_option = FILL_OPTIONS[0]
-        if self.swww_transition_type not in SWWW_TRANSITION_TYPES:
-            self.swww_transition_type = "any"
+        if self.awww_transition_type not in awww_TRANSITION_TYPES:
+            self.awww_transition_type = "any"
         if self.number_of_columns <= 0:
             self.number_of_columns = 1
 
-        # Check validity of other swww options:
-        if 0 > int(self.swww_transition_angle) > 180:
-            self.swww_transition_angle = 0
-        if 0 > int(self.swww_transition_step) > 255:
-            self.swww_transition_step = 90
-        if 0 > float(self.swww_transition_duration):
-            self.swww_transition_duration = 2
-        if 0 > int(self.swww_transition_fps):
-            self.swww_transition_fps = 60
+        # Check validity of other awww options:
+        if 0 > int(self.awww_transition_angle) > 180:
+            self.awww_transition_angle = 0
+        if 0 > int(self.awww_transition_step) > 255:
+            self.awww_transition_step = 90
+        if 0 > float(self.awww_transition_duration):
+            self.awww_transition_duration = 2
+        if 0 > int(self.awww_transition_fps):
+            self.awww_transition_fps = 60
 
 
     def attribute_selected_wallpaper(self) -> None:
@@ -247,12 +247,12 @@ class Config:
         config.set("Settings", "zen_mode", str(self.zen_mode))
         config.set("Settings", "post_command", self.post_command)
         config.set("Settings", "number_of_columns", str(self.number_of_columns))
-        config.set("Settings", "swww_transition_type", str(self.swww_transition_type))
-        config.set("Settings", "swww_transition_step", str(self.swww_transition_step))
-        config.set("Settings", "swww_transition_angle", str(self.swww_transition_angle))
-        config.set("Settings", "swww_transition_duration", str(self.swww_transition_duration))
-        config.set("Settings", "swww_transition_fps", str(self.swww_transition_fps))
-        config.set("Settings", "swww_namespace", str(self.swww_namespace))
+        config.set("Settings", "awww_transition_type", str(self.awww_transition_type))
+        config.set("Settings", "awww_transition_step", str(self.awww_transition_step))
+        config.set("Settings", "awww_transition_angle", str(self.awww_transition_angle))
+        config.set("Settings", "awww_transition_duration", str(self.awww_transition_duration))
+        config.set("Settings", "awww_transition_fps", str(self.awww_transition_fps))
+        config.set("Settings", "awww_namespace", str(self.awww_namespace))
         config.set("Settings", "mpvpaper_sound", str(self.mpvpaper_sound))
         config.set("Settings", "mpvpaper_options", str(self.mpvpaper_options))
         config.set("Settings", "use_xdg_state", str(self.use_xdg_state))
